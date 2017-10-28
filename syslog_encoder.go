@@ -92,6 +92,7 @@ func NewSyslogEncoder(cfg SyslogEncoderConfig) zapcore.Encoder {
 			app = app[:maxAppNameLen]
 		}
 		app = toRFC5424CompliantASCIIString(app)
+		cfg.App = app
 	}
 
 	cfg.EncoderConfig.LineEnding = "\n"

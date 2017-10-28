@@ -60,7 +60,7 @@ func NewLogstashWithTimeout(debugLevel bool, host string, port int, timeout int)
 		atom = zap.NewAtomicLevelAt(zap.InfoLevel)
 	}
 
-	_log := zap.New(zapcore.NewCore(enc, zapcore.Lock(sink), atom))
+	_log := zap.New(zapcore.NewCore(enc, zapcore.Lock(sink), atom), zap.AddCaller(), zap.AddStacktrace(atom))
 	return &Logger{log: _log}, nil
 }
 
