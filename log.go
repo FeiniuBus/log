@@ -186,3 +186,7 @@ func (l *Logger) Panicln(v ...interface{}) {
 func (l *Logger) With(key string, value interface{}) *Logger {
 	return &Logger{l.log.With(zap.Any(key, value))}
 }
+
+func (l *Logger) Sync() error {
+	return l.log.Sync()
+}
