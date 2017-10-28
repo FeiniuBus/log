@@ -22,9 +22,7 @@ func CallerEncoder(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder
 func New(debugLevel bool) (*Logger, error) {
 	config := zap.NewProductionConfig()
 	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	config.EncoderConfig.EncodeCaller = func(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
-		enc.AppendString(strings.Join([]string{caller.TrimmedPath(), runtime.FuncForPC(caller.PC).Name()}, ":"))
-	}
+	config.EncoderConfig.EncodeCaller = CallerEncoder
 
 	if debugLevel {
 		config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
@@ -61,8 +59,6 @@ func NewLogstashWithTimeout(debugLevel bool, host string, port int, timeout int)
 	} else {
 		atom = zap.NewAtomicLevelAt(zap.InfoLevel)
 	}
-
-	zap.NewProductionConfig()
 
 	_log := zap.New(zapcore.NewCore(enc, zapcore.Lock(sink), atom))
 	return &Logger{log: _log}, nil
