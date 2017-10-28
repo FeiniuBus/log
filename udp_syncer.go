@@ -58,7 +58,7 @@ func (s *UDPSyncer) connect() error {
 
 func (s *UDPSyncer) Write(p []byte) (n int, err error) {
 	if s.conn != nil {
-		if n, err = s.conn.Write(p); err != nil {
+		if n, err = s.conn.Write(p); err == nil {
 			return n, err
 		}
 	}

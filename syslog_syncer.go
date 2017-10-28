@@ -21,7 +21,7 @@ type SyslogSyncer struct {
 
 func (s *SyslogSyncer) Write(p []byte) (n int, err error) {
 	if s.conn != nil {
-		if n, err = s.conn.Write(p); err != nil {
+		if n, err = s.conn.Write(p); err == nil {
 			return n, err
 		}
 	}
