@@ -33,6 +33,8 @@ func main() {
 
 ## Logstash
 
+Currently only support through the udp packet to logstash to send data
+
 ```Go
 package main
 
