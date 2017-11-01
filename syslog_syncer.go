@@ -1,5 +1,3 @@
-// +build !windows,!nacl,!plan9
-
 package log
 
 import (
@@ -9,11 +7,6 @@ import (
 )
 
 const localDeadline = 20 * time.Millisecond
-
-func NewSyslogSyncer() (*SyslogSyncer, error) {
-	s := &SyslogSyncer{}
-	return s, s.connect()
-}
 
 type SyslogSyncer struct {
 	conn net.Conn

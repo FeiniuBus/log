@@ -10,6 +10,11 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+func NewSyslogSyncer() (*SyslogSyncer, error) {
+	s := &SyslogSyncer{}
+	return s, s.connect()
+}
+
 func NewSyslog(debugLevel bool, app string) (*Logger, error) {
 	enc := NewSyslogEncoder(SyslogEncoderConfig{
 		EncoderConfig: zapcore.EncoderConfig{
