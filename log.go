@@ -2,8 +2,6 @@ package log
 
 import (
 	"fmt"
-	"log/syslog"
-	"os"
 	"runtime"
 	"strings"
 
@@ -61,41 +59,6 @@ func NewLogstashWithTimeout(debugLevel bool, host string, port int, timeout int)
 	}
 
 	_log := zap.New(zapcore.NewCore(enc, sink, atom), zap.AddCaller(), zap.AddStacktrace(atom))
-	return &Logger{log: _log}, nil
-}
-
-func NewSyslog(debugLevel bool, app string) (*Logger, error) {
-	enc := NewSyslogEncoder(SyslogEncoderConfig{
-		EncoderConfig: zapcore.EncoderConfig{
-			NameKey:        "logger",
-			CallerKey:      "caller",
-			MessageKey:     "msg",
-			StacktraceKey:  "stacktrace",
-			EncodeLevel:    zapcore.LowercaseLevelEncoder,
-			EncodeTime:     zapcore.ISO8601TimeEncoder,
-			EncodeDuration: zapcore.SecondsDurationEncoder,
-			EncodeCaller:   CallerEncoder,
-		},
-
-		Facility: syslog.LOG_LOCAL0,
-		Hostname: "localhost",
-		PID:      os.Getpid(),
-		App:      app,
-	})
-
-	sink, err := NewSyslogSyncer()
-	if err != nil {
-		return nil, err
-	}
-
-	var atom zap.AtomicLevel
-	if debugLevel {
-		atom = zap.NewAtomicLevelAt(zap.DebugLevel)
-	} else {
-		atom = zap.NewAtomicLevelAt(zap.InfoLevel)
-	}
-
-	_log := zap.New(zapcore.NewCore(enc, zapcore.Lock(sink), atom))
 	return &Logger{log: _log}, nil
 }
 
